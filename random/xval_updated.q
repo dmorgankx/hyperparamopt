@@ -10,7 +10,20 @@ xv.i.search:{[sf;k;n;x;y;f;p;t]
  (r;pr;f[pykwargs pr:first key desc avg each r:sf[k;n;x i 0;y i 0;f;p]](x;y)@\:/:i)}
 xv.i.xvpf:{[pf;xv;k;n;x;y;f;p]p!(xv[k;n;x;y]f pykwargs@)@'p:pf p}
 gs:1_xv.i.search@'xv.i.xvpf[{[p]key[p]!/:1_'(::)cross/value p}]@'xv.j
-rs:1_xv.i.search@'xv.i.xvpf[{[p]flip rs.hpgen p}]@'xv.j
+rs:1_xv.i.search@'xv.i.xvpf[{[p]rs.hpgen p}]@'xv.j
+
+// bayesian search CV
+bs.bsCV:{[clf;kfolds;hld;hp;seed]
+ // optimizer
+ opt:.p.import[`skopt][`:BayesSearchCV][clf[];hp;`random_state pykw seed];
+ // find best parameter set for each fold
+ r:{bst:(x[`:fit]. first y[])[`:best_params_]`;(bst;(x[`:score]. last y[])`)}[opt]each kfolds;
+ // find best parameter set across k folds
+ best:(enlist[`random_state]!enlist seed),r[;0].ml.imax r[;1];
+ // train on entire set of k folds
+ clf:(clf pykwargs@)best;clf[`:fit]. hld`xtrain`ytrain;
+ // test on holdout set
+ (r[;1];best;(clf[`:score]. hld`xtest`ytest)`)}
 
 // generate random hyperparameters
 /* x = dictionary with:
@@ -21,16 +34,18 @@ rs:1_xv.i.search@'xv.i.xvpf[{[p]flip rs.hpgen p}]@'xv.j
 rs.hpgen:{
   // set default values
   if[(::)~n:x`n;n:10];
+  // set seed
+  state:$[(::)~x`random_state;42;x`random_state];
   // find numerical parameters
   num:where any`uniform`loguniform=\:first each p:x`p;
   // find respective namespaces (ns) and append sequence or n pts to generate
   $[`sobol~typ:x`typ;
      [ns:`sbl;p,:num!p[num],'enlist each flip rs.i.sobol[count num;n]];
     typ~`random;
-     [ns:`rdm;system"S ",string$[(::)~x`seed;42;x`seed];p,:num!p[num],'n];
+     [ns:`rdm;system"S ",string state;p,:num!p[num],'n];
     '"hyperparam type not supported"];
   // generate each hyperparameter
-  rs.i.hpgen[ns;n]each p}
+  update random_state:state from flip rs.i.hpgen[ns;n]each p}
 
 // sobol sequence generator from python
 /* x = dimension
