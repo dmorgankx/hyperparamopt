@@ -76,7 +76,7 @@ load_hpopt_res:{[fp;fn]
   get_data:{fnc:{key(!).("S=,")0:x};$[1<count first x;fnc each;fnc]x};
   d:get_data each@[d;;";"vs]c:where";"in/:d:(!).("S*";"|")0:hsym`$fp,fn;
   // convert standard columns to set types
-  flip{@[x;y;$[z;]string@]}/[d;`fold_score`random_state`time`score;"FIZF"]}
+  flip{@[x;y;$[z;]string@]}/[d;`fold_score`random_state`time`score;"FITF"]}
 
 // string results table
 /* k  = keys
