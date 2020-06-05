@@ -23,7 +23,9 @@ bs.bsCV:{[clf;kfolds;hld;hp;seed]
  // train on entire set of k folds
  clf:(clf pykwargs@)best;clf[`:fit]. hld`xtrain`ytrain;
  // test on holdout set
- (r[;1];best;(clf[`:score]. hld`xtest`ytest)`)}
+ t:(clf[`:score]. hld`xtest`ytest)`;
+ best:@[best;where 10=type each best;{`$x}];
+ (r[;1];best;t)}
 
 // generate random hyperparameters
 /* x = dictionary with:

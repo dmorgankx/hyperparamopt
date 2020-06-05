@@ -1,31 +1,28 @@
-\l runhpopt.q
-
 \d .ml
 
-args:.Q.opt .z.x;
-if[not count fin :args`fin ;2"No input file arg"   ;exit 1];
-if[not count fout:args`fout;2"No output file arg"  ;exit 1];
-if[not count dtyp:args`dtyp;2"No datatypes arg"    ;exit 1];
-if[not count targ:args`targ;2"No target column arg";exit 1];
+k:key args:first each .Q.opt .z.x;
+if[not`fin  in k;2"No input file arg"   ;exit 1];
+if[not`dtyp in k;2"No datatypes arg"    ;exit 1];
+if[not`targ in k;2"No target column arg";exit 1];
+
+\l runhpopt.q
 
 .Q.gc[];
 
 st:.z.t;
--1"Running comparison";
-r:hpopt_mltmodel[hsym`$fin;dtyp;`$targ];
--1"Plotting results";
-plt:i.plt_hpopt_res[r;1b];
-tm:.z.t-st;
+-1"\nRunning comparison\n";
+r:hpopt_mltmodel[hsym`$args`fin;args`dtyp;`$args`targ];
 
 -1"Saving results";
-out:("outputs/",/:("files";"img"),\:"/"),'fout,/:(".txt";".png");
-out:$[w:.z.o like"w*";ssr[;"/";"\\"];]each out; 
-if[not w;"touch ",out 0];
-h:hopen hsym`$out 0;
-h each,\:[;"\n"]i.hptab2str'[sk;value fr;1+max count each sk:string key fr:flip r];
-hclose h;
+out:{x,/:y}'[("outputs/",/:("files/";"img/"));(string[key r],\:"_",ssr[;":";"."]"_"sv string(.z.d;.z.t)),\:/:(".txt";".png")];
+out:$[w:.z.o like"w*";ssr[;"/";"\\"];]@''out; 
+if[not w;{"touch ",x}each out 0];
+h:{hopen hsym`$x}each out 0;
+{[r;h]h each,\:[;"\n"].ml.i.hptab2str'[sk;value fr;1+max count each sk:string key fr:flip r]}'[r;h];
+hclose each h;
 
--1"Saving plots";
-plt[`:savefig]out 1;
+-1"\nPlotting results";
+plts:i.plt_hpopt_res'[r;out 1];
+tm:.z.t-st;
 
--1"Comparison complete, see outputs/";
+-1"Overall time taken: ",string[tm],". Comparison complete, see outputs/";

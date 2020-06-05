@@ -29,7 +29,7 @@ Running comparison
 Running random search
 Running Sobol search
 Running Bayesian search
-Returing results
+Returning results
 
 Plotting results
 Saving results
@@ -50,7 +50,7 @@ Running comparison
 Running random search
 Running Sobol search
 Running Bayesian search
-Returing results
+Returning results
 ```
 
 To run an individual model the function `.ml.hpopt_sglmodel` is run, where the data, target, grid search scoring function and hyperparameters for grid, random (pseudo and Sobol) and Bayesian must be passed in.
@@ -79,7 +79,7 @@ Running comparison
 Running random search
 Running Sobol search
 Running Bayesian search
-Returing results
+Returning results
 q)r
 alpha        average fold_score                              l1_ratio  method   random_state time         score
 ---------------------------------------------------------------------------------------------------------------

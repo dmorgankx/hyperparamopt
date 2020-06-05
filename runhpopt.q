@@ -13,7 +13,7 @@ hpopt_mltmodel:{[fin;dtyp;targ]
   data:flip d c:cols[d:(dtyp;",",())0:fin]except targ; 
   targ:d targ;
   // run comparison for each model
-  hpopt_sglmodel[data;targ;;;;;]'[scf;mdl_import[];gshp;rshp;bshp]}
+  hpopt_sglmodel[data;targ;;;;;;]'[scf;mdl_import[];gshp;rshp;bshp;til 2]}
 
 // run hyperparameter optimization comparison of grid, random, sobol-random and bayesian search
 /* data  = data from csv
@@ -25,7 +25,7 @@ hpopt_mltmodel:{[fin;dtyp;targ]
 /* s     = sobol-random search hyperparameters
 /* b     = bayesian search hyperparameters
 /.       > returns a results table with best hyperparameters for each method
-hpopt_sglmodel:{[data;targ;score;mdl;g;r;b]
+hpopt_sglmodel:{[data;targ;score;mdl;g;r;b;stopper]
   // set random seed
   system"S ",string prms`seed;
   // check number of trials works for sobol
@@ -46,6 +46,7 @@ hpopt_sglmodel:{[data;targ;score;mdl;g;r;b]
   // run sobol-random search
   -1"Running Sobol search";
   st:.z.t;
+  /$[stopper~1;`e+1;];
   res_sbl:rs.kfsplit[;;data;targ;score;sblhp;]. prms`k`n`test;
   res_sbl:i.run_comp[res_sbl;`sobol;.z.t-st];
   // create split data for bayesian search
@@ -75,7 +76,7 @@ load_hpopt_res:{[fp;fn]
 i.run_comp:{[r;typ;tm]
   -2#@[r;1;(`method`time`fold_score!(typ;tm;$[typ in`random`sobol`grid;r[0]value r 1;r 0])),]}
 
-i.plt_hpopt_res:{[r;saveplt]
+i.plt_hpopt_res:{[r;fpath]
   scores:select i,method,fold_score from r;
   toplt:flip raze{x[`x],/:x`fold_score}each scores;
   plt:.p.import`matplotlib.pyplot;
@@ -84,6 +85,8 @@ i.plt_hpopt_res:{[r;saveplt]
   plt[`:xlabel]"Method";
   plt[`:ylabel]"Score";
   plt[`:title]"K-fold score spread for hyperparameter optimization methods";
-  $[saveplt;plt;plt[`:show][];]}
+  -1"Saving plots";
+  plt[`:savefig]fpath;
+  plt[`:clf][];}
 
 i.hptab2str:{[k;v;mx](mx#k,mx#" "),"| ",$[1=count first v;","sv;(" ; "sv","sv/:)]string v}
