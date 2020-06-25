@@ -9,6 +9,14 @@ The repository contains:
 - `userhp.q` - a q script containing user defined hyperparameters for each model
 - `xval_updated.q` - a q script containing an updated version of xval.q contained within the [ML-Toolkit](https://github.com/kxsystems/ml) which allows for grid, random, Sobol-random and Bayesian hyperparameter search
 
+## Requirements
+
+The sobol-seq library is required to run the random hyperparameter optimization functionality. This can be installed using the below:
+
+```
+$ pip install -r requirements.txt
+```
+
 ## Running with bash script
 
 The bash script can be run using the below:
