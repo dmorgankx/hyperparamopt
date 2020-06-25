@@ -1,1 +1,4 @@
+sklearn
+matplotlib
+numpy
 sobol-seq

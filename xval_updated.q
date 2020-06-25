@@ -47,7 +47,7 @@ rs.hpgen:{
      [ns:`rdm;system"S ",string state;p,:num!p[num],'n];
     '"hyperparam type not supported"];
   // generate each hyperparameter
-  update random_state:state from flip rs.i.hpgen[ns;n]each p}
+  flip rs.i.hpgen[ns;n]each p}
 
 // sobol sequence generator from python
 /* x = dimension
@@ -62,10 +62,13 @@ rs.i.hpgen:{[ns;n;p]
   // split parameters
   p:@[;0;first](0;1)_p,();
   // respective parameter generation
-  $[`boolean~typ:p 0;n?0b;
-    typ~`symbol ;n?p 1;
+  typ:p 0;
+  $[`boolean~typ;n?0b;
+    typ~`symbol ;n?p[1]0;
     typ~`uniform;rs.i.uniform[ns]. p 1;
     typ~`loguniform;rs.i.loguniform[ns]. p 1;
+    // addition of a random choice from list
+    typ~`rand;n?(),p[1]0;
     '"please enter correct type"]}
 
 // generate list of uniform numbers
