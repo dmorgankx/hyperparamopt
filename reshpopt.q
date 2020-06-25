@@ -15,7 +15,7 @@ r:hpopt_mltmodel[hsym`$args`fin;args`dtyp;`$args`targ];
 
 -1"Saving results";
 out:{x,/:y}'[("outputs/",/:("files/";"img/"));(string[key r],\:"_",ssr[;":";"."]"_"sv string(.z.d;.z.t)),\:/:(".txt";".png")];
-out:$[w:.z.o like"w*";ssr[;"/";"\\"];]@''out; 
+out:$[w:.z.o like"w*";ssr[;"/";"\\"]@'';]out; 
 if[not w;{"touch ",x}each out 0];
 h:{hopen hsym`$x}each out 0;
 {[r;h]h each,\:[;"\n"].ml.i.hptab2str'[sk;value fr;1+max count each sk:string key fr:flip r]}'[r;h];

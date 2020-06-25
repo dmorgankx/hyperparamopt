@@ -35,20 +35,19 @@ hpopt_sglmodel:{[data;targ;score;mdl;g;r;b;stopper]
   -1"Running grid search";
   st:.z.t;
   res_gs:gs.kfsplit[;;data;targ;score;g;]. prms`k`n`test;
-  res_gs:i.run_comp[res_gs;`grid;.z.t-st];
+  res_gs:i.run_comp[res_gs;`grid;.z.t-st;stopper];
   // run pseudo-random search
   rdmhp:`typ`random_state`n`p!(`random;prms`seed;prms`trials;r);
   sblhp:`typ`random_state`n`p!(`sobol ;prms`seed;prms`trials;r);
   -1"Running random search";
   st:.z.t;
   res_rdm:rs.kfsplit[;;data;targ;score;rdmhp;]. prms`k`n`test;
-  res_rdm:i.run_comp[res_rdm;`random;.z.t-st];
+  res_rdm:i.run_comp[res_rdm;`random;.z.t-st;stopper];
   // run sobol-random search
   -1"Running Sobol search";
   st:.z.t;
-  /$[stopper~1;`e+1;];
   res_sbl:rs.kfsplit[;;data;targ;score;sblhp;]. prms`k`n`test;
-  res_sbl:i.run_comp[res_sbl;`sobol;.z.t-st];
+  res_sbl:i.run_comp[res_sbl;`sobol;.z.t-st;stopper];
   // create split data for bayesian search
   hout:traintestsplit[data;targ;prms`test];
   splt:raze(.ml.xv.i.idxR . .ml.xv.i`splitidx`groupidx)[prms`k;prms`n]. hout`xtrain`ytrain;  / equivalent to kfsplit
@@ -56,7 +55,7 @@ hpopt_sglmodel:{[data;targ;score;mdl;g;r;b;stopper]
   -1"Running Bayesian search";
   st:.z.t;
   res_bs:bs.bsCV[mdl[];splt;hout;b;prms`seed];
-  res_bs:i.run_comp[res_bs;`bayesian;.z.t-st];
+  res_bs:i.run_comp[res_bs;`bayesian;.z.t-st;stopper];
   // return results in table
   res:(res_gs;res_rdm;res_sbl;res_bs);
   -1"Returing results";
@@ -73,7 +72,8 @@ load_hpopt_res:{[fp;fn]
   // convert standard columns to set types
   flip{@[x;y;$[z;]string@]}/[d;`fold_score`random_state`time`score;"FITF"]}
 
-i.run_comp:{[r;typ;tm]
+i.run_comp:{[r;typ;tm;stopper]
+  $[stopper~1;`e+1;];
   -2#@[r;1;(`method`time`fold_score!(typ;tm;$[typ in`random`sobol`grid;r[0]value r 1;r 0])),]}
 
 i.plt_hpopt_res:{[r;fpath]

@@ -46,11 +46,31 @@ q)fin :"test_data.csv"  / works with any csv containing a kdb table
 q)dtyp:"FFFFFIB"
 q)targ:`x6
 q)r:.ml.hpopt_mltmodel[hsym`$fin;dtyp;targ]
-Running comparison
+Running grid search
 Running random search
 Running Sobol search
 Running Bayesian search
-Returning results
+Running grid search
+Running random search
+Running Sobol search
+Running Bayesian search
+q)r
+SGDClassifier| +`alpha`average`fold_score`l1_ratio`method`random_state`time`score!(0.02438354 0.0003729849..
+SVC          | +`C`fold_score`gamma`kernel`method`random_state`time`score!(10 99515.21 31.62278 22.3642;(1..
+q)r`SGDClassifier
+alpha        average fold_score                             l1_ratio  method   random_state time         score
+--------------------------------------------------------------------------------------------------------------
+0.02438354   0       1       0.99375 0.58125 1       1      0         grid     42           00:00:22.299 1
+0.0003729849 0       1       0.99375 0.8125  1       1      0.4863586 random   42           00:00:18.706 1
+0.0001647392 0       1       0.975   0.95    1       1      0.3925781 sobol    42           00:00:18.766 1
+0.01026829   0       0.94375 0.9125  0.9625  0.94375 0.9125 0         bayesian 42           00:04:23.630 0.99
+q)r`SVC
+C        fold_score      gamma    kernel method   random_state time         score
+---------------------------------------------------------------------------------
+10       1 0.50625 1 1 1 1e-005   linear grid     42           00:00:57.699 1
+99515.21 1 0.50625 1 1 1 20479.05 linear random   42           00:00:54.959 1
+31.62278 1 0.50625 1 1 1 31.62278 linear sobol    42           00:00:57.005 1
+22.3642  1 1       1 1 1 34.13981 poly   bayesian 42           00:09:39.074 1
 ```
 
 To run an individual model the function `.ml.hpopt_sglmodel` is run, where the data, target, grid search scoring function and hyperparameters for grid, random (pseudo and Sobol) and Bayesian must be passed in.
@@ -64,7 +84,7 @@ q)scf:.ml.xv.fitscore mdl:{.p.import[`sklearn.linear_model]`:SGDClassifier}
 // grid search hpgen function
 q)gs_01_gen:{l:((0.,(1_til x-1)*10%x-1),10.)%10;(l*z+abs y)+y}
 // grid search hyperparams
-q)gs:`random_state`average`l1_ratio`alpha!(prms`seed;01b;gs_01_gen[16;0;1];xexp[10]gs_01_gen[32;-5;2])
+q)gs:`random_state`average`l1_ratio`alpha!(.ml.prms`seed;01b;gs_01_gen[16;0;1];xexp[10]gs_01_gen[32;-5;2])
 // random search hyperparams
 q)rs:`average`l1_ratio`alpha!(`boolean;(`uniform;0;1;"f");(`loguniform;-5;2;"f"))
 // python imports for bayesian hyperparams
