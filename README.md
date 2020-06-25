@@ -6,7 +6,7 @@ The repository contains:
 - `hpopt_compare.sh` - a bash script which will run the hyperparameter optimization for multiple datasets, across multiple models
 - `reshpopt.q` - a q script which takes command line arguments and will run the hyperparameter optimization for a user defined dataset across multiple models and then save results/plots on disk
 - `runhpopt.q` - a q script providing the functionality to apply hyperparameter optimization to both single and multiple machine learning models for a given dataset
-- `userhp.q` - a q script containing user defined hyperparameters for each model
+- `userhp_(class/reg).q` - q scripts containing user defined classification/regression model hyperparameters
 - `xval_updated.q` - a q script containing an updated version of xval.q contained within the [ML-Toolkit](https://github.com/kxsystems/ml) which allows for grid, random, Sobol-random and Bayesian hyperparameter search
 
 ## Requirements
