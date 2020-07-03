@@ -2,6 +2,7 @@
 
 k:key args:first each .Q.opt .z.x;
 if[not`fin  in k;2"No input file arg"   ;exit 1];
+if[not`fout in k;2"No output file arg"  ;exit 1];
 if[not`dtyp in k;2"No datatypes arg"    ;exit 1];
 if[not`targ in k;2"No target column arg";exit 1];
 if[not`ptyp in k;2"No problem type arg" ;exit 1];
@@ -16,7 +17,7 @@ st:.z.t;
 r:hpopt_mltmodel[hsym`$args`fin;args`dtyp;`$args`targ;args`ptyp];
 
 -1"Saving results";
-out:{x,/:y}'[("outputs/",/:("files/";"img/"));(string[key r],\:"_",ssr[;":";"."]"_"sv string(.z.d;.z.t)),\:/:(".txt";".png")];
+out:{x,/:y}'[("outputs/",/:("files/";"img/"));(string[key r],\:args[`fout],"_",ssr[;":";"."]"_"sv string(.z.d;.z.t)),\:/:(".txt";".png")];
 out:$[w:.z.o like"w*";ssr[;"/";"\\"]@'';]out;
 if[not w;{"touch ",x}each out 0];
 h:{hopen hsym`$x}each out 0;
@@ -28,3 +29,4 @@ plts:i.plt_hpopt_res'[r;out 1];
 tm:.z.t-st;
 
 -1"Overall time taken: ",string[tm],". Comparison complete, see outputs/";
+exit 0
