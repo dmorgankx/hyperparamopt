@@ -27,10 +27,10 @@ $ ./hpopt_compare.sh
 
 ## Running q script with command line arguments
 
-The script `reshpopt.q` can be run using the below, where the user must pass in a file path to the data `fin`, a file path where they would like the outputs to be saved `fout`, the datatypes of the input dataset `dtyp` and the target column `targ`.
+The script `reshpopt.q` can be run using the below, where the user must pass in a file path to the data `fin`, a file path where they would like the outputs to be saved `fout`, the datatypes of the input dataset `dtyp`, the target column `targ` and the problem type `ptyp` (class/reg).
 
 ```q
-$ q reshpopt.q -fin data.csv -fout results -dtyp FFFFFIB -targ x6
+$ q reshpopt.q -fin data.csv -fout results -dtyp FFFFFIB -targ x6 -ptype class
 Running comparison
 
 Running comparison
@@ -53,7 +53,8 @@ q)\l runhpopt.q
 q)fin :"test_data.csv"  / works with any csv containing a kdb table
 q)dtyp:"FFFFFIB"
 q)targ:`x6
-q)r:.ml.hpopt_mltmodel[hsym`$fin;dtyp;targ]
+q)ptyp:`class
+q)r:.ml.hpopt_mltmodel[hsym`$fin;dtyp;targ;ptyp]
 Running grid search
 Running random search
 Running Sobol search
@@ -85,6 +86,7 @@ To run an individual model the function `.ml.hpopt_sglmodel` is run, where the d
 
 ```q
 q)\l runhpopt.q
+q)\l userhp_class.q
 q)data:([]1000?1f;1000?1f;1000?1f;asc 1000?100)
 q)targ:asc 1000?0b
 // grid search scoring function
