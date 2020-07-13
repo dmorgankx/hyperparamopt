@@ -1,0 +1,8 @@
+criterion    | mae,mae,mae,mae
+fold_score   | 1,1,1,1,1 ; 1,1,1,1,1 ; 1,1,1,1,1 ; 0.9999684,0.9999662,1,0.999973,0.999974
+max_depth    | 3,4,5,14
+method       | grid,random,sobol,bayesian
+n_estimators | 80,99,98,100
+random_state | 42,42,42,42
+time         | 00:00:54.218,00:01:04.449,00:00:59.335,00:05:36.853
+score        | 1,1,1,1
