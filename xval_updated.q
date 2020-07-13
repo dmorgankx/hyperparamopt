@@ -15,11 +15,13 @@ rs:1_xv.i.search@'xv.i.xvpf[{[p]rs.hpgen p}]@'xv.j
 // bayesian search CV
 bs.bsCV:{[clf;kfolds;hld;hp;seed]
  // optimizer
- opt:.p.import[`skopt][`:BayesSearchCV][clf[];hp;`random_state pykw seed];
+ opt:$[sd:seed 0;
+   .p.import[`skopt][`:BayesSearchCV][clf[];hp;`random_state pykw seed 1];
+   .p.import[`skopt][`:BayesSearchCV][clf[];hp]];
  // find best parameter set for each fold
  r:{bst:(x[`:fit]. first y[])[`:best_params_]`;(bst;(x[`:score]. last y[])`)}[opt]each kfolds;
  // find best parameter set across k folds
- best:(enlist[`random_state]!enlist seed),r[;0].ml.imax r[;1];
+ best:$[sd;(enlist[`random_state]!enlist seed 1),;]r[;0].ml.imax r[;1];
  // train on entire set of k folds
  clf:(clf pykwargs@)best;clf[`:fit]. hld`xtrain`ytrain;
  // test on holdout set

@@ -11,19 +11,21 @@ hpopt_mltmodel:{[fin;dtyp;targ;ptyp]
   data:flip d c:cols[d:(dtyp;",",())0:fin]except targ; 
   targ:d targ;
   // run comparison for each model
-  hpopt_sglmodel[data;targ;;;;;]'[scf;mdl_import[];gshp;rshp;bshp]}
+  hpopt_sglmodel[data;targ;;;;;;]'[scf;mdl;mdl_import[];gshp;rshp;bshp]}
 
 // run hyperparameter optimization comparison of grid, random, sobol-random and bayesian search
 /* data  = data from csv
 /* targ  = target column as list
 /* score = scoring function required for grid and random search methods
+/* m     = model name from userhp_(class/reg).q
 /* mdl   = projection of python model
 /* g     = grid search hyperparameters
 /* r     = random search hyperparameters
 /* s     = sobol-random search hyperparameters
 /* b     = bayesian search hyperparameters
 /.       > returns a results table with best hyperparameters for each method
-hpopt_sglmodel:{[data;targ;score;mdl;g;r;b]
+hpopt_sglmodel:{[data;targ;score;m;mdl;g;r;b]
+  -1 string[m]," model:";
   // set random seed
   system"S ",string prms`seed;
   // check number of trials works for sobol
@@ -52,8 +54,9 @@ hpopt_sglmodel:{[data;targ;score;mdl;g;r;b]
   splt:raze(.ml.xv.i.idxR . .ml.xv.i`splitidx`groupidx)[prms`k;prms`n]. hout`xtrain`ytrain;
   // run bayesian
   -1"Running Bayesian search";
+  $[`random_state in key b;[sd:(1b;b`random_state);b:k!b k:key[b]except`random_state];sd:(0b;::)];
   st:.z.t;
-  res_bs:bs.bsCV[mdl[];splt;hout;b;prms`seed];
+  res_bs:bs.bsCV[mdl[];splt;hout;b;sd];
   res_bs:i.run_comp[res_bs;`bayesian;.z.t-st];
   // return results in table
   res:(res_gs;res_rdm;res_sbl;res_bs);
