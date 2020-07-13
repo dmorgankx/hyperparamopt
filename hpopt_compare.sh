@@ -31,7 +31,13 @@ $QHOME/l64/q reshpopt.q -fin datasets/reg_hr.csv -fout hr -dtyp FFFFFFFDFFFFFDFF
 echo "Running Insurance dataset"
 $QHOME/l64/q reshpopt.q -fin datasets/reg_insurance.csv -fout insurance -dtyp IBFIBFF -targ charges -ptyp reg
 
-echo "Running car dataset"
+echo "Running Car dataset"
 $QHOME/l64/q reshpopt.q -fin datasets/reg_car.csv -fout car -dtyp IIFFFIII -targ Selling_Price -ptyp reg
+
+echo "Running Life Expectancy dataset"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_lifeexp.csv -fout lifeexp -dtyp FFFFFFFFFFFFFFFFFFFFFF -targ Life_expectancy -ptyp reg
+
+echo "Running Fuel dataset"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_fuel.csv -fout fuel -dtyp FFFFFBBBB -targ consume -ptyp reg
 
 echo "Comparisons complete."
