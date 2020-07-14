@@ -40,4 +40,16 @@ $QHOME/l64/q reshpopt.q -fin datasets/reg_lifeexp.csv -fout lifeexp -dtyp FFFFFF
 echo "Running Fuel dataset"
 $QHOME/l64/q reshpopt.q -fin datasets/reg_fuel.csv -fout fuel -dtyp FFFFFBBBB -targ consume -ptyp reg
 
+echo "Running Rainfall dataset"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_rainfall_10.csv -fout rainfall -dtyp IIIII -targ Rainfall -ptyp reg
+
+echo "Running all NASA data"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_nasa20all.csv -fout nasaALL -dtyp FFFFFFFFFFFFFFFFFFFF -targ sigPhiVer1hr -ptyp reg
+
+echo "Running CHU NASA data"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_nasa20chu.csv -fout nasaCHU -dtyp FFFFFFFFFFFFFFFFFFFF -targ sigPhiVer1hr -ptyp reg
+
+echo "Running MCM NASA data"
+$QHOME/l64/q reshpopt.q -fin datasets/reg_nasa20mcm.csv -fout nasaMCM -dtyp FFFFFFFFFFFFFFFFFFFF -targ sigPhiVer1hr -ptyp reg
+
 echo "Comparisons complete."
