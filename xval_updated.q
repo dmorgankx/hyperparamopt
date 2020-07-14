@@ -27,6 +27,7 @@ bs.bsCV:{[clf;kfolds;hld;hp;seed]
  // test on holdout set
  t:(clf[`:score]. hld`xtest`ytest)`;
  best:@[best;where 10=type each best;{`$x}];
+ if[sd;best,:enlist[`random_state]!enlist seed 1];
  (r[;1];best;t)}
 
 // generate random hyperparameters

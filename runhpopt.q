@@ -60,7 +60,7 @@ hpopt_sglmodel:{[data;targ;score;m;mdl;g;r;b]
   res_bs:i.run_comp[res_bs;`bayesian;.z.t-st];
   // return results in table
   res:(res_gs;res_rdm;res_sbl;res_bs);
-  -1"Returing results\n";
+  -1"Returning results\n";
   update score:res[;1]from{k!x k:asc key x}each res[;0]}
 
 // load in previous results table - note hyperparameters are loaded as symbols

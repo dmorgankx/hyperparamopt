@@ -48,8 +48,8 @@ cat:.p.import[`skopt.space]`:Categorical;
 
 // bayesian hp
 bshp:models[`mdl]!
-  (`average`l1_ratio`alpha!(cat[01b]`;re[0;1;`prior pykw"uniform"]`;re[1e-005;100f;`prior pykw"log-uniform"]`);
-   `n_estimators`learning_rate!(int[10;100;`prior pykw"uniform"]`;re[.001;1f;`prior pykw"log-uniform"]`);
-   `n_estimators`learning_rate!(int[10;100;`prior pykw"uniform"]`;re[.001;1f;`prior pykw"log-uniform"]`);
-   `n_estimators`max_depth`criterion!(int[10;100;`prior pykw"uniform"]`;re[1f;100f;`prior pykw"uniform"]`;cat[`gini`entropy]`))
+  (`random_state`average`l1_ratio`alpha!(prms`seed;cat[01b]`;re[0;1;`prior pykw"uniform"]`;re[1e-005;100f;`prior pykw"log-uniform"]`);
+   `random_state`n_estimators`learning_rate!(prms`seed;int[10;100;`prior pykw"uniform"]`;re[.001;1f;`prior pykw"log-uniform"]`);
+   `random_state`n_estimators`learning_rate!(prms`seed;int[10;100;`prior pykw"uniform"]`;re[.001;1f;`prior pykw"log-uniform"]`);
+   `random_state`n_estimators`max_depth`criterion!(prms`seed;int[10;100;`prior pykw"uniform"]`;re[1f;100f;`prior pykw"uniform"]`;cat[`gini`entropy]`))
 
